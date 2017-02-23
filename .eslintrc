@@ -8,5 +8,5 @@
   },
   "extends": ["airbnb"],
   "plugins": ["react"],
-  "rules": { "import/no-unresolved": { commonjs: false, amd: false } }
+  "rules": { "import/no-unresolved": 0 }
 }
