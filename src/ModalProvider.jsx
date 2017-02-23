@@ -89,9 +89,9 @@ ModalProvider.defaultProps = {
   modalIndex: -1,
 };
 ModalProvider.propTypes = {
-  children: React.PropTypes.element.isRequired,
+  children: React.PropTypes.node.isRequired,
   childModals: React.PropTypes.arrayOf(React.PropTypes.object),
-  componentClass: React.PropTypes.element,
+  componentClass: React.PropTypes.oneOfType([React.PropTypes.node, React.PropTypes.func]),
   modalIndex: React.PropTypes.number,
 };
 export default ModalProvider;
