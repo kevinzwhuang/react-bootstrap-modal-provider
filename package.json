@@ -2,10 +2,32 @@
   "name": "react-bootstrap-modal-provider",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/react-bootstrap-modal-provider.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "lint": "node_modules/.bin/eslint ./src",
+    "build:dev": "node_modules/.bin/webpack",
+    "build:prod": "node_modules/.bin/webpack -p --output-filename=react-bootstrap-modal-provider.min.js",
+    "build": "npm run lint && npm run build:dev && npm run build:prod"
+  },
+  "peerDependencies": {
+    "react": ">=0.14.0",
+    "react-bootstrap": ">=0.30.0",
+    "react-dom": ">=0.14.0"
   },
   "author": "Kevin Huang <kevin.ziwen.huang@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "babel-core": "^6.23.1",
+    "babel-loader": "^6.3.2",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.22.0",
+    "babel-preset-react": "^6.23.0",
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.0",
+    "react-bootstrap": "^0.30.7",
+    "webpack": "^2.2.1"
+  }
 }
