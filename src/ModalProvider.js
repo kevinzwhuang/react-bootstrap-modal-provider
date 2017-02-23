@@ -3,6 +3,7 @@ const Modal = require('react-bootstrap/lib/Modal');
 
 const modalProviderInitialState = {
   body: null,
+  childModals: [],
   closeButton: null,
   footer: null,
   modalProps: {},
@@ -12,7 +13,12 @@ const modalProviderInitialState = {
 class ModalProvider extends React.Component {
   constructor(props) {
     super(props);
-    this.state = modalProviderInitialState;
+    const { childModals, modalIndex } = props;
+    if (childModals && childModals.length > 0 && modalIndex !== -1) {
+      this.state = {...childModals[modalIndex], childModals}
+    } else {
+      this.state = modalProviderInitialState;
+    }
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
   }
@@ -20,15 +26,34 @@ class ModalProvider extends React.Component {
     const modalProvider = {showModal: this.showModal, hideModal: this.hideModal};
     return {modalProvider};
   }
+  componentDidUpdate(prevProps) {
+    const { childModals, modalIndex } = this.props;
+    if(childModals && prevProps.childModals[modalIndex] !== childModals[modalIndex]) {
+      this.showModal({...childModals[modalIndex], childModals});
+    }
+  }
   showModal(options) {
-    if(!options.body) { return false }
-    this.setState(options);
+    if (!options.body) { return false }
+    if (this.state.body) {
+      const newChildModals = [...this.state.childModals, options];
+      this.setState({childModals: newChildModals});
+    } else {
+      this.setState(options);
+    }
   }
   hideModal() {
     this.setState(modalProviderInitialState);
   }
   renderModalBody() {
-    return <Modal.Body>{this.state.body}</Modal.Body>
+    return (
+      <ModalProvider
+        componentClass={Modal.Body}
+        childModals={this.props.childModals || this.state.childModals}
+        modalIndex={ this.props.modalIndex + 1 }
+      >
+        {this.state.body}
+      </ModalProvider>
+    )
   }
   renderModalHeader() {
     return (
@@ -42,7 +67,7 @@ class ModalProvider extends React.Component {
   }
   render() {
     const { children, componentClass: Component } = this.props;
-    const { body, closeButton, footer, modalProps } = this.state;
+    const { body, closeButton, footer, modalProps, title } = this.state;
     return (
       <Component>
         {children}
@@ -51,12 +76,12 @@ class ModalProvider extends React.Component {
           {body && this.renderModalBody()}
           {footer && this.renderModalFooter()}
         </Modal>
-      </Component
+      </Component>
     )
   }
 }
 
 ModalProvider.childContextTypes = {modalProvider: React.PropTypes.object.isRequired};
-ModalProvider.defaultProps = {componentClass: 'div'};
-ModalProvider.propTypes = {componentClass: React.PropTypes.string};
+ModalProvider.defaultProps = {componentClass: 'div', modalIndex: -1};
+ModalProvider.propTypes = {componentClass: React.PropTypes.element, modalIndex: React.PropTypes.number};
 export default ModalProvider;
