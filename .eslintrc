@@ -1,0 +1,12 @@
+{
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": ["airbnb"],
+  "plugins": ["react"],
+  "rules": { "import/no-unresolved": 0 }
+}
