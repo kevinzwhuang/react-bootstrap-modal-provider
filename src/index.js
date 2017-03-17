@@ -1,4 +1,5 @@
 import ModalProvider from './ModalProvider';
-import withModal from './withModal';
+import withModalProvider from './withModalProvider';
+import modalProviderShape from './modalProviderShape';
 
-export { ModalProvider, withModal };
+export { ModalProvider, withModalProvider, modalProviderShape };
