@@ -2,57 +2,50 @@ import React from 'react';
 import { Modal } from 'react-bootstrap';
 
 const modalProviderInitialState = {
+  _closing: false,
   body: null,
-  childModals: [],
   closeButton: null,
   footer: null,
   modalProps: {},
   title: null,
 };
 
+const warnMissingBody = () => console.warn("'body' was missing from the options provided to showModal - this is required in order to display a modal.");
+
 class ModalProvider extends React.Component {
   constructor(props) {
     super(props);
-    const { childModals, modalIndex } = props;
-    if (childModals && childModals.length > 0 && modalIndex !== -1) {
-      this.state = { ...childModals[modalIndex], childModals };
-    } else {
-      this.state = modalProviderInitialState;
-    }
+    this.state = modalProviderInitialState;
     this.showModal = this.showModal.bind(this);
     this.hideModal = this.hideModal.bind(this);
+    this.handleExited = this.handleExited.bind(this);
   }
   getChildContext() {
     const modalProvider = { showModal: this.showModal, hideModal: this.hideModal };
     return { modalProvider };
   }
-  componentDidUpdate(prevProps) {
-    const { childModals, modalIndex } = this.props;
-    if (childModals && prevProps.childModals[modalIndex] !== childModals[modalIndex]) {
-      this.showModal({ ...childModals[modalIndex], childModals });
-    }
-  }
   showModal(options) {
-    if (!options.body) { return false; }
-    if (this.state.body) {
-      const newChildModals = [...this.state.childModals, options];
-      return this.setState({ childModals: newChildModals });
+    if (typeof options === 'function') {
+      const modalProvider = this.getChildContext().modalProvider;
+      const newOptions = options({ ...modalProvider });
+      if (!newOptions.body) { return warnMissingBody(); }
+      return this.setState(newOptions);
     }
+    if (!options.body) { return warnMissingBody(); }
     return this.setState(options);
   }
   hideModal() {
-    this.setState(modalProviderInitialState);
+    this.setState({ _closing: true });
   }
-  renderModalBody() {
-    return (
-      <ModalProvider
-        componentClass={Modal.Body}
-        childModals={this.props.childModals || this.state.childModals}
-        modalIndex={this.props.modalIndex + 1}
-      >
-        {this.state.body}
-      </ModalProvider>
-    );
+  handleExited() {
+    this.setState(modalProviderInitialState);
+    if (this.props.modalProps.onExited) { this.props.modalProps.onExited(); }
+    if (this.state.modalProps.onExited) { this.state.modalProps.onExited(); }
+  }
+  calculateShow() {
+    if (this.state._closing) { return false; }
+    if (this.state.body) { return true; }
+    return false;
   }
   renderModalHeader() {
     return (
@@ -61,16 +54,29 @@ class ModalProvider extends React.Component {
       </Modal.Header>
     );
   }
+  renderModalBody() {
+    return (
+      <ModalProvider componentClass={Modal.Body}>
+        {this.state.body}
+      </ModalProvider>
+    );
+  }
   renderModalFooter() {
     return <Modal.Footer>{this.state.footer}</Modal.Footer>;
   }
   render() {
-    const { children, componentClass: Component } = this.props;
-    const { body, closeButton, footer, modalProps, title } = this.state;
+    const { children, componentClass: Component, modalProps } = this.props;
+    const { body, closeButton, footer, modalProps: stateModalProps, title } = this.state;
     return (
       <Component>
         {children}
-        <Modal show={!!body} onHide={this.hideModal} {...modalProps} >
+        <Modal
+          show={this.calculateShow()}
+          onHide={this.hideModal}
+          {...modalProps}
+          {...stateModalProps}
+          onExited={this.handleExited}
+        >
           {(title || closeButton) && this.renderModalHeader()}
           {body && this.renderModalBody()}
           {footer && this.renderModalFooter()}
@@ -84,14 +90,28 @@ ModalProvider.childContextTypes = {
   modalProvider: React.PropTypes.object.isRequired,
 };
 ModalProvider.defaultProps = {
-  childModals: null,
   componentClass: 'div',
-  modalIndex: -1,
+  modalProps: {},
 };
 ModalProvider.propTypes = {
   children: React.PropTypes.node.isRequired,
-  childModals: React.PropTypes.arrayOf(React.PropTypes.object),
   componentClass: React.PropTypes.oneOfType([React.PropTypes.node, React.PropTypes.func]),
-  modalIndex: React.PropTypes.number,
+  modalProps: React.PropTypes.shape({
+    animation: React.PropTypes.bool,
+    autoFocus: React.PropTypes.bool,
+    backdrop: React.PropTypes.oneOf(['static', true, false]),
+    bsClass: React.PropTypes.string,
+    bsSize: React.PropTypes.oneOf(['lg', 'large', 'sm', 'small']),
+    className: React.PropTypes.string,
+    dialogClassName: React.PropTypes.string,
+    dialogComponentClass: React.PropTypes.element,
+    enforceFocus: React.PropTypes.bool,
+    keyboard: React.PropTypes.bool,
+    onEnter: React.PropTypes.func,
+    onEntering: React.PropTypes.func,
+    onExit: React.PropTypes.func,
+    onExited: React.PropTypes.func,
+    restoreFocus: React.PropTypes.bool,
+  }),
 };
 export default ModalProvider;
