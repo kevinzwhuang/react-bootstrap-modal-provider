@@ -31,7 +31,7 @@ this.props.modalProvider.showModal({
 You can also call `hideModal` to remove the modal that was just displayed.
 
 
-###TODO:
+### TODO:
 - [x] Create ModalProvider component
 - [x] Create withModal HOC
 - [x] Setup build script with webpack
