@@ -1,0 +1,57 @@
+<!DOCUMENT html>
+<html lang="en">
+  <head>
+    <title>React-Bootstrap-Modal-Provider nested example</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+  </head>
+  <body>
+    <div id="container">
+      <style type="text/css" scoped>
+        .loader {
+          margin: 10% auto;
+          font-size: 10px;
+          position: relative;
+          text-indent: -9999em;
+          border-top: 1.1em solid rgba(100, 100, 100, 0.2);
+          border-right: 1.1em solid rgba(100, 100, 100, 0.2);
+          border-bottom: 1.1em solid rgba(100, 100, 100, 0.2);
+          border-left: 1.1em solid grey;
+          -webkit-transform: translateZ(0);
+          -ms-transform: translateZ(0);
+          transform: translateZ(0);
+          -webkit-animation: load8 1.1s infinite linear;
+          animation: load8 1.1s infinite linear;
+        }
+        .loader,
+        .loader:after {
+          border-radius: 50%;
+          width: 10em;
+          height: 10em;
+        }
+        @-webkit-keyframes load8 {
+          0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+          }
+          100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+          }
+        }
+        @keyframes load8 {
+          0% {
+            -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+          }
+          100% {
+            -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+          }
+        }
+      </style>
+
+      <div class="loader">Loading...</div>
+    </div>
+    <script type="text/javascript" src="dist/bundle.js"></script>
+  </body>
+</html>
