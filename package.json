@@ -3,11 +3,15 @@
   "version": "0.0.1",
   "description": "",
   "main": "dist/react-bootstrap-modal-provider.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "lint": "node_modules/.bin/eslint ./src",
     "build:dev": "node_modules/.bin/webpack",
     "build:prod": "node_modules/.bin/webpack -p --output-filename=react-bootstrap-modal-provider.min.js",
-    "build": "npm run lint && npm run build:dev && npm run build:prod"
+    "build": "npm run lint && npm run build:dev && npm run build:prod",
+    "prepare": "npm run build"
   },
   "peerDependencies": {
     "react": ">=0.14.0",
