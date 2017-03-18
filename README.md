@@ -19,6 +19,17 @@ of `ModalProvider`
 `withModalProvider` is a Higher Order Component that decorates the component that you
 provide it with a `modalProvider` prop.
 
+The `modalProvider` prop provided by `withModalProvider` has the following shape:
+>> `showModal(options: Object)`: A function that will render a modal with the options you provide it.
+>> It takes the following options:
+>>>> `body` (required): The content rendered inside `<Modal.Body>`.
+>>>> `closeButton`: Displays a closeButton on `<Modal.Header>` when set to true.
+>>>> `footer`: The content rendered inside `<Modal.Footer>`. No `<Modal.Footer>` is rendered when this is `null.
+>>>> `modalProps`: Props that are passed to `<Modal>`.
+>>>> `title`: The content rendered inside `<Modal.Title>`. No `<Modal.Title>` is rendered when this is `null`
+
+>> `hideModal()`: A function that will hide the modal of the current `<ModalProvider>` scope. When called within a nested `<ModalProvider>`, it will close the nested modal only.
+
 In the component that you pass `withModalProvider`, you can pass an object with
 your desired modal configuration to `modalProvider.showModal`:
 
@@ -78,8 +89,6 @@ BasicExamplePage.propTypes = { modalProvider: modalProviderShape.isRequired };
 export default withModalProvider(BasicExamplePage);
 ...
 ```
-
-You can also call `hideModal` to remove the modal that was just displayed.
 
 
 ### TODO:
