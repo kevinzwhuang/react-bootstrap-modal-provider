@@ -14,7 +14,7 @@ children. `ModalProvider` will take care of maintaining the state of its modal.
 `ModalProvider` can receive the following props:
 
 Prop | Type | Default | Description
-:---|:---|:---
+:---|:---|:---|:---
 `componentClass` | `String` or `Component` | `'div'` | The root container of ModalProvider
 `modalProps` | `Object` | `{}` | Props to be provided to the `<Modal>`
 
