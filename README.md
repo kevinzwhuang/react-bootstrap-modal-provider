@@ -7,21 +7,25 @@ modals more performantly with less markup.
 
 ### API
 
+##### `ModalProvider`
 `ModalProvider` is a component that renders a Modal for you alongside its
-children. `ModalProvider` will take care of maintaining the state of its modal
+children. `ModalProvider` will take care of maintaining the state of its modal.
 
-- all you need to do is set this up and use `withModalProvider` to start creating
-  modals on the fly. Props:
+`ModalProvider` can receive the following props:
 
-- `componentClass` (default: 'div'): The component rendered as the root element
-of `ModalProvider`
+Prop | Type | Default | Description
+:---|:---|:---
+`componentClass` | `String` or `Component` | `'div'` | The root container of ModalProvider
+`modalProps` | `Object` | `{}` | Props to be provided to the `<Modal>`
+
+##### `withModalProvider`
 
 `withModalProvider` is a Higher Order Component that decorates the component that you
 provide it with a `modalProvider` prop.
 
 The `modalProvider` prop provided by `withModalProvider` has the following shape:
 
-Prop | Type | Description
+Provided Prop | Type | Description
 :---|:---|:---
 `showModal(options: Object)` | `Function` | A function that will render a modal with the options you provide it.
 `hideModal()` | `Function` | A function that will hide the modal of the current `<ModalProvider>` scope. When called within a nested `<ModalProvider>`, it will close the nested modal only.
