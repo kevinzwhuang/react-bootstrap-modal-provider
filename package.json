@@ -1,6 +1,6 @@
 {
   "name": "react-bootstrap-modal-provider",
-  "version": "0.0.1",
+  "version": "0.0.1-alpha.1",
   "description": "",
   "main": "dist/react-bootstrap-modal-provider.js",
   "files": [
