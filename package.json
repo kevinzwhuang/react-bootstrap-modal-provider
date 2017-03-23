@@ -1,7 +1,7 @@
 {
   "name": "react-bootstrap-modal-provider",
   "version": "0.0.1-alpha.1",
-  "description": "",
+  "description": "React-Bootstrap-Modal-Provider is a React Component that renders React-Bootstrap modals more performantly with less markup.",
   "main": "dist/react-bootstrap-modal-provider.js",
   "files": [
     "dist"
