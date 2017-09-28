@@ -56,7 +56,10 @@ class ModalProvider extends React.Component {
   }
   renderModalBody() {
     return (
-      <ModalProvider componentClass={Modal.Body}>
+      <ModalProvider
+        componentClass={Modal.Body}
+        modalProps={{ ...this.state.modalProps, ...this.props.modalProps }}
+      >
         {this.state.body}
       </ModalProvider>
     );
