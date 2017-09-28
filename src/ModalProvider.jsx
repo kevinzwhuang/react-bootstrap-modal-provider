@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Modal } from 'react-bootstrap';
 
 const modalProviderInitialState = {
@@ -90,31 +91,31 @@ class ModalProvider extends React.Component {
 }
 
 ModalProvider.childContextTypes = {
-  modalProvider: React.PropTypes.object.isRequired,
+  modalProvider: PropTypes.object.isRequired,
 };
 ModalProvider.defaultProps = {
   componentClass: 'div',
   modalProps: {},
 };
 ModalProvider.propTypes = {
-  children: React.PropTypes.node.isRequired,
-  componentClass: React.PropTypes.oneOfType([React.PropTypes.node, React.PropTypes.func]),
-  modalProps: React.PropTypes.shape({
-    animation: React.PropTypes.bool,
-    autoFocus: React.PropTypes.bool,
-    backdrop: React.PropTypes.oneOf(['static', true, false]),
-    bsClass: React.PropTypes.string,
-    bsSize: React.PropTypes.oneOf(['lg', 'large', 'sm', 'small']),
-    className: React.PropTypes.string,
-    dialogClassName: React.PropTypes.string,
-    dialogComponentClass: React.PropTypes.element,
-    enforceFocus: React.PropTypes.bool,
-    keyboard: React.PropTypes.bool,
-    onEnter: React.PropTypes.func,
-    onEntering: React.PropTypes.func,
-    onExit: React.PropTypes.func,
-    onExited: React.PropTypes.func,
-    restoreFocus: React.PropTypes.bool,
+  children: PropTypes.node.isRequired,
+  componentClass: PropTypes.oneOfType([PropTypes.node, PropTypes.func]),
+  modalProps: PropTypes.shape({
+    animation: PropTypes.bool,
+    autoFocus: PropTypes.bool,
+    backdrop: PropTypes.oneOf(['static', true, false]),
+    bsClass: PropTypes.string,
+    bsSize: PropTypes.oneOf(['lg', 'large', 'sm', 'small']),
+    className: PropTypes.string,
+    dialogClassName: PropTypes.string,
+    dialogComponentClass: PropTypes.element,
+    enforceFocus: PropTypes.bool,
+    keyboard: PropTypes.bool,
+    onEnter: PropTypes.func,
+    onEntering: PropTypes.func,
+    onExit: PropTypes.func,
+    onExited: PropTypes.func,
+    restoreFocus: PropTypes.bool,
   }),
 };
 export default ModalProvider;

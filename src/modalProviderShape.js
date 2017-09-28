@@ -1,4 +1,4 @@
-import { PropTypes } from 'react';
+import PropTypes from 'prop-types';
 
 const modalProviderShape = PropTypes.shape({
   showModal: PropTypes.func.isRequired,

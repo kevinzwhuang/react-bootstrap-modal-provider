@@ -35,5 +35,8 @@
     "react-bootstrap": "^0.30.7",
     "react-dom": "^15.4.2",
     "webpack": "^2.2.1"
+  },
+  "dependencies": {
+    "prop-types": "^15.6.0"
   }
 }
