@@ -1,12 +1,15 @@
 import React from 'react';
-import modalProviderShape from './modalProviderShape';
+import ModalProviderContext from './ModalProviderContext';
 
-const withModalProvider = (Component) => {
-  const ComponentWithModalProvider = (props, context) =>
-    <Component {...props} modalProvider={context.modalProvider} />;
-  ComponentWithModalProvider.contextTypes = {
-    modalProvider: modalProviderShape.isRequired,
-  };
+const withModalProvider = Component => {
+  const ComponentWithModalProvider = props => (
+    <ModalProviderContext.Consumer>
+      {modalProvider => {
+        // eslint-disable-next-line react/jsx-props-no-spreading
+        return <Component {...props} modalProvider={modalProvider} />;
+      }}
+    </ModalProviderContext.Consumer>
+  );
   return ComponentWithModalProvider;
 };
 

@@ -6,7 +6,7 @@
     "browser": true,
     "node": true
   },
-  "extends": ["airbnb"],
+  "extends": ["airbnb", "prettier", "plugin:react-hooks/recommended"],
   "plugins": ["react"],
   "rules": {
     "import/no-unresolved": 0,

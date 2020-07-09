@@ -1,12 +1,15 @@
+const path = require('path');
+
 module.exports = {
   entry: {
-    'react-bootstrap-modal-provider': './src/index.js',
+    'react-bootstrap-modal-provider': path.join(__dirname, 'src', 'index.js'),
   },
   output: {
-    path: './dist',
+    path: path.join(__dirname, 'dist'),
     filename: '[name].js',
     library: 'ReactBootstrapModalProvider',
     libraryTarget: 'umd',
+    globalObject: 'this',
   },
   module: {
     rules: [
@@ -29,21 +32,6 @@ module.exports = {
         amd: 'react',
       },
     },
-    {
-      'react-dom': {
-        root: 'ReactDOM',
-        commonjs2: 'react-dom',
-        commonjs: 'react-dom',
-        amd: 'react-dom',
-      },
-    },
-    {
-      'react-bootstrap': {
-        root: 'ReactBootstrap',
-        commonjs2: 'react-bootstrap',
-        commonjs: 'react-bootstrap',
-        amd: 'react-bootstrap',
-      },
-    },
+    'react-bootstrap/lib/Modal',
   ],
 };

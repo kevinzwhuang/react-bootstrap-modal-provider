@@ -1,98 +1,108 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import Modal from 'react-bootstrap/lib/Modal';
+import ModalProviderContext from './ModalProviderContext';
 
-const modalProviderInitialState = {
-  _closing: false,
-  body: null,
-  closeButton: null,
-  footer: null,
-  modalProps: {},
-  title: null,
-};
+const warnMissingBody = () =>
+  console.warn(
+    "'body' was missing from the options provided to showModal - this is required in order to display a modal.",
+  );
 
-const warnMissingBody = () => console.warn("'body' was missing from the options provided to showModal - this is required in order to display a modal.");
+function getModalProviderInitialOptions() {
+  return {
+    _closing: false,
+    body: null,
+    closeButton: null,
+    footer: null,
+    modalProps: {},
+    title: null,
+  };
+}
 
-class ModalProvider extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = modalProviderInitialState;
-    this.showModal = this.showModal.bind(this);
-    this.hideModal = this.hideModal.bind(this);
-    this.handleExited = this.handleExited.bind(this);
-  }
-  getChildContext() {
-    const modalProvider = { showModal: this.showModal, hideModal: this.hideModal };
-    return { modalProvider };
-  }
-  showModal(options) {
+function ModalProvider(props) {
+  const [modalProviderOptions, setModalProviderOptions] = useState(
+    getModalProviderInitialOptions,
+  );
+  const hideModal = () => {
+    setModalProviderOptions(options => ({ ...options, _closing: true }));
+  };
+  const showModal = options => {
     if (typeof options === 'function') {
-      const modalProvider = this.getChildContext().modalProvider;
-      const newOptions = options({ ...modalProvider });
-      if (!newOptions.body) { return warnMissingBody(); }
-      return this.setState(newOptions);
+      const newOptions = options({ hideModal, showModal });
+      if (!newOptions.body) {
+        return warnMissingBody();
+      }
+      return setModalProviderOptions(newOptions);
     }
-    if (!options.body) { return warnMissingBody(); }
-    return this.setState(options);
-  }
-  hideModal() {
-    this.setState({ _closing: true });
-  }
-  handleExited() {
-    this.setState(modalProviderInitialState);
-    if (this.props.modalProps.onExited) { this.props.modalProps.onExited(); }
-    if (this.state.modalProps.onExited) { this.state.modalProps.onExited(); }
-  }
-  calculateShow() {
-    if (this.state._closing) { return false; }
-    if (this.state.body) { return true; }
+    if (!options.body) {
+      return warnMissingBody();
+    }
+    return setModalProviderOptions(options);
+  };
+  const modalProviderContextValue = { hideModal, showModal };
+  const handleExited = () => {
+    setModalProviderOptions(getModalProviderInitialOptions());
+    if (props.modalProps.onExited) {
+      props.modalProps.onExited();
+    }
+    if (modalProviderOptions.modalProps.onExited) {
+      modalProviderOptions.modalProps.onExited();
+    }
+  };
+  const calculateShow = () => {
+    if (modalProviderOptions._closing) {
+      return false;
+    }
+    if (modalProviderOptions.body) {
+      return true;
+    }
     return false;
-  }
-  renderModalHeader() {
-    return (
-      <Modal.Header closeButton={this.state.closeButton} >
-        <Modal.Title>{this.state.title}</Modal.Title>
-      </Modal.Header>
-    );
-  }
-  renderModalBody() {
-    return (
-      <ModalProvider
-        componentClass={Modal.Body}
-        modalProps={{ ...this.state.modalProps, ...this.props.modalProps }}
-      >
-        {this.state.body}
-      </ModalProvider>
-    );
-  }
-  renderModalFooter() {
-    return <Modal.Footer>{this.state.footer}</Modal.Footer>;
-  }
-  render() {
-    const { children, componentClass: Component, modalProps } = this.props;
-    const { body, closeButton, footer, modalProps: stateModalProps, title } = this.state;
-    return (
+  };
+
+  const { children, componentClass: Component, modalProps } = props;
+  const {
+    body,
+    closeButton,
+    footer,
+    modalProps: stateModalProps,
+    title,
+  } = modalProviderOptions;
+  return (
+    <ModalProviderContext.Provider value={modalProviderContextValue}>
       <Component>
         {children}
         <Modal
-          show={this.calculateShow()}
-          onHide={this.hideModal}
+          show={calculateShow()}
+          onHide={hideModal}
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...modalProps}
+          // eslint-disable-next-line react/jsx-props-no-spreading
           {...stateModalProps}
-          onExited={this.handleExited}
+          onExited={handleExited}
         >
-          {(title || closeButton) && this.renderModalHeader()}
-          {body && this.renderModalBody()}
-          {footer && this.renderModalFooter()}
+          {(title || closeButton) && (
+            <Modal.Header closeButton={modalProviderOptions.closeButton}>
+              <Modal.Title>{modalProviderOptions.title}</Modal.Title>
+            </Modal.Header>
+          )}
+          {body && (
+            <ModalProvider
+              componentClass={Modal.Body}
+              modalProps={{
+                ...modalProviderOptions.modalProps,
+                ...modalProps,
+              }}
+            >
+              {modalProviderOptions.body}
+            </ModalProvider>
+          )}
+          {footer && <Modal.Footer>{modalProviderOptions.footer}</Modal.Footer>}
         </Modal>
       </Component>
-    );
-  }
+    </ModalProviderContext.Provider>
+  );
 }
 
-ModalProvider.childContextTypes = {
-  modalProvider: PropTypes.object.isRequired,
-};
 ModalProvider.defaultProps = {
   componentClass: 'div',
   modalProps: {},
