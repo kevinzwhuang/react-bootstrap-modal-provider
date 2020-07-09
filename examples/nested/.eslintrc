@@ -1,0 +1,16 @@
+{
+  "ecmaFeatures": {
+    "jsx": true
+  },
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "extends": ["airbnb", "prettier"],
+  "plugins": ["react"],
+  "rules": {
+    "import/no-unresolved": 0,
+    "no-underscore-dangle": "off",
+    "no-console": ["error", { allow: ["warn"] }]
+  }
+}
