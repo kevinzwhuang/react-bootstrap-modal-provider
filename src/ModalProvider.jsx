@@ -19,7 +19,7 @@ function getModalProviderInitialOptions() {
   };
 }
 
-function ModalProvider(props) {
+function ModalProvider({ children, componentClass: Component, modalProps }) {
   const [modalProviderOptions, setModalProviderOptions] = useState(
     getModalProviderInitialOptions,
   );
@@ -42,8 +42,8 @@ function ModalProvider(props) {
   const modalProviderContextValue = { hideModal, showModal };
   const handleExited = () => {
     setModalProviderOptions(getModalProviderInitialOptions());
-    if (props.modalProps.onExited) {
-      props.modalProps.onExited();
+    if (modalProps.onExited) {
+      modalProps.onExited();
     }
     if (modalProviderOptions.modalProps.onExited) {
       modalProviderOptions.modalProps.onExited();
@@ -59,7 +59,6 @@ function ModalProvider(props) {
     return false;
   };
 
-  const { children, componentClass: Component, modalProps } = props;
   const {
     body,
     closeButton,
