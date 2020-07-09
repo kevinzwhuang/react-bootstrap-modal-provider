@@ -27,17 +27,18 @@ function ModalProvider({ children, componentClass: Component, modalProps }) {
     setModalProviderOptions(options => ({ ...options, _closing: true }));
   };
   const showModal = options => {
+    const defaultOptions = getModalProviderInitialOptions();
     if (typeof options === 'function') {
       const newOptions = options({ hideModal, showModal });
       if (!newOptions.body) {
         return warnMissingBody();
       }
-      return setModalProviderOptions(newOptions);
+      return setModalProviderOptions({ ...defaultOptions, newOptions });
     }
     if (!options.body) {
       return warnMissingBody();
     }
-    return setModalProviderOptions(options);
+    return setModalProviderOptions({ ...defaultOptions, options });
   };
   const modalProviderContextValue = { hideModal, showModal };
   const handleExited = () => {
