@@ -33,12 +33,12 @@ function ModalProvider({ children, componentClass: Component, modalProps }) {
       if (!newOptions.body) {
         return warnMissingBody();
       }
-      return setModalProviderOptions({ ...defaultOptions, newOptions });
+      return setModalProviderOptions({ ...defaultOptions, ...newOptions });
     }
     if (!options.body) {
       return warnMissingBody();
     }
-    return setModalProviderOptions({ ...defaultOptions, options });
+    return setModalProviderOptions({ ...defaultOptions, ...options });
   };
   const modalProviderContextValue = { hideModal, showModal };
   const handleExited = () => {
