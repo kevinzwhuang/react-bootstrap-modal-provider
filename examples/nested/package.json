@@ -4,7 +4,7 @@
     "start": "node devServer"
   },
   "dependencies": {
-    "express": "^4.15.2",
+    "express": "^4.17.3",
     "react": "^16.13.1",
     "react-bootstrap": "^0.33.1",
     "react-bootstrap-modal-provider": "2.0.3",
